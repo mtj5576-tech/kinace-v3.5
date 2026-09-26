@@ -1,0 +1,117 @@
+{
+  "artifact_type": "kinace_v3_t08_r2_requalification",
+  "schema_version": 1,
+  "task_id": "T08-R2",
+  "status": "passed",
+  "verdict": "PASS",
+  "generated_at_utc": "2026-09-26T12:29:47.4117947Z",
+  "repository": {
+    "root": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4",
+    "git_head": "e01131f4be3bc0ab54f14665919b60155795c6fc",
+    "python": "3.10.11"
+  },
+  "read_only": true,
+  "implementation_modified": false,
+  "original_t08": {
+    "artifact_path": "bus/artifacts/T08.md",
+    "artifact_sha256": "afd0f53006f177300b42e75848bdb6623dfe4e822138e421531172600a84e662",
+    "evidence_path": "bus/evidence/T08.json",
+    "evidence_sha256": "5041f9a8d46c6cd121b7c1e8893fdb0aca93bdb3c7f12294c9ffd9279079297f",
+    "execution_status": "blocked",
+    "verdict": "BLOCK",
+    "blocked_reason": "machine_gate_failed",
+    "missing_fields": ["assumptions", "key_uncertainties", "counterexample_conclusion"],
+    "interpretation": "Implementation checks passed in the original artifact; the evidence record alone was blocked for missing requalification fields."
+  },
+  "acceptance_criteria": {
+    "T08R-A1": "PASS - focused, counterexample-focused, and full suites passed without code changes.",
+    "T08R-A2": "PASS - mark-to-market equity, liquidated equity, closed-trade stats, and open positions are separate contracts and reconcile to mark-to-market total assets.",
+    "T08R-A3": "PASS - suspended, limit-down, zero-volume, missing-bar, and final-entry holdings remain open; no end_of_backtest trade is fabricated."
+  },
+  "source_findings": [
+    "trial_backtest.py:430-463 sets total_assets = cash + market_value and mark_to_market_equity = total_assets.",
+    "trial_backtest.py:466-554 uses total_assets for final equity, return, drawdown, volatility, Sharpe, and Sortino and declares equity_basis=mark_to_market.",
+    "trial_backtest.py:913-932 closes only sellable, pre-final holdings; unsellable and final-entry holdings are skipped.",
+    "trial_backtest.py:934-979 emits open_positions with code, shares, last_date, last_price, cost, unrealized_pnl, and unsellable_reason, then computes liquidated_equity separately.",
+    "trial_backtest.py:417-427 and 981-1003 derive closed_trade_stats only from completed trades; open positions never enter trades.",
+    "trial_backtest.py:1104-1107 and 1234-1288 persist the four outputs in separate SQLite columns.",
+    "optimization.py:230-238 and 314-325 fail closed on non-mark-to-market objective or metrics basis.",
+    "research_protocol.py:82-91 declares equity_basis=mark_to_market and equity_curve=mark_to_market_equity."
+  ],
+  "counterexamples": [
+    {
+      "case": "unsellable final holding fabricated as end_of_backtest trade",
+      "conclusion": "not reproduced; all five terminal cases produced zero trades and one open position"
+    },
+    {
+      "case": "liquidated equity silently mixed into mark-to-market risk metrics",
+      "conclusion": "not reproduced; risk metrics use mark-to-market points and the objective rejects a non-mark-to-market basis"
+    },
+    {
+      "case": "open positions included in closed-trade statistics",
+      "conclusion": "not reproduced; stats are computed from completed trades only and persisted separately"
+    }
+  ],
+  "counterexample_conclusion": "No counterexample was reproduced. Unsellable final holdings are not fabricated as end_of_backtest trades; mark-to-market equity remains the risk and objective basis; liquidated_equity, closed_trade_stats, and open_positions remain separate.",
+  "command_results": [
+    {
+      "command": "python -m pytest -q tests/test_trial_backtest.py tests/test_portfolio_backtest.py tests/test_research_objective.py",
+      "exit_code": 0,
+      "stdout": "..........................                                               [100%]",
+      "result": "26 focused tests; all passed"
+    },
+    {
+      "command": "python -m pytest -q -o addopts='' tests/test_trial_backtest.py::test_terminal_open_position_semantics tests/test_trial_backtest.py::test_sellable_terminal_position_uses_liquidated_equity_once tests/test_trial_backtest.py::test_open_positions_are_persisted_separately_from_closed_trades tests/test_optimization.py::test_primary_objective_binds_mark_to_market_equity tests/test_research_protocol.py::test_evaluation_protocol_hash_is_stable_and_detects_config_change",
+      "exit_code": 0,
+      "stdout": ".........                                                                [100%]\n9 passed in 0.86s",
+      "result": "9 counterexample-focused tests; all passed"
+    },
+    {
+      "command": "python -m pytest -q",
+      "exit_code": 0,
+      "stdout": "........................................................................ [ 29%]\n........................................................................ [ 59%]\n........................................................................ [ 88%]\n............................                                             [100%]",
+      "result": "244 collected tests; all passed"
+    },
+    {
+      "command": "python -m compileall -q src",
+      "exit_code": 0,
+      "stdout": "",
+      "result": "passed with no output"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "stdout": "LF-to-CRLF warnings only; no whitespace errors.",
+      "result": "passed"
+    }
+  ],
+  "changed_file_hashes": {
+    "algorithm": "SHA-256",
+    "scope": "Seven implementation and regression-test files identified by the original T08 artifact.",
+    "files": {
+      "src/kinace_v3/trial_backtest.py": "eefcf1d23ba2521b00ca460c4003728d9328238f97117662468a3e1fe0631a59",
+      "src/kinace_v3/portfolio_backtest.py": "a0c07d16ddab809e84c8e758005c13111addbc4c86c7372a9bda85146ebdd069",
+      "src/kinace_v3/optimization.py": "afacf848bcda326c401ba1ac3fd8a186418739ddb13b8b1cb381f0da81a9496f",
+      "src/kinace_v3/research_protocol.py": "00604bae5a15499b953e24370282715af5e576594b862caec3eb91623791c235",
+      "tests/test_trial_backtest.py": "f3ab57c3daa0358e1cf04a6058330a86be2f5710c05c785f34e2a71e06ef43c5",
+      "tests/test_portfolio_backtest.py": "241d4dfab8d94c75d379ba8cf6f7cbb7f362530589f0e83f00962019ab713b65",
+      "tests/test_research_objective.py": "ab12b38da19d1a79751331cbe48c17300f660c2a0e806558aa6988db5bc163f3"
+    }
+  },
+  "assumptions": [
+    "The existing T08 working-tree implementation is the candidate under verification and was not edited.",
+    "Focused synthetic tests are sufficient for this semantic requalification.",
+    "Liquidated_equity may equal mark-to-market equity when all holdings are unsellable; the contracts still remain separate."
+  ],
+  "key_uncertainties": [
+    "No production-data backtest was required.",
+    "Provider-specific suspension encodings and malformed-data variants beyond the tested cases are not exhaustively covered.",
+    "The worktree contains broader pre-existing changes, so hashes are scoped to the seven T08 files."
+  ],
+  "reproduction_commands": [
+    "python -m pytest -q tests/test_trial_backtest.py tests/test_portfolio_backtest.py tests/test_research_objective.py",
+    "python -m pytest -q",
+    "python -m compileall -q src",
+    "python -m pytest -q -o addopts='' tests/test_trial_backtest.py::test_terminal_open_position_semantics tests/test_trial_backtest.py::test_sellable_terminal_position_uses_liquidated_equity_once tests/test_trial_backtest.py::test_open_positions_are_persisted_separately_from_closed_trades tests/test_optimization.py::test_primary_objective_binds_mark_to_market_equity tests/test_research_protocol.py::test_evaluation_protocol_hash_is_stable_and_detects_config_change"
+  ]
+}

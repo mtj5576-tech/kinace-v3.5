@@ -1,0 +1,77 @@
+{
+  "artifact_type": "kinace_v3_t06_r2_requalification",
+  "schema_version": 1,
+  "task_id": "T06-R2",
+  "status": "passed",
+  "verdict": "PASS",
+  "generated_at_utc": "2026-09-26T14:52:19.9648718Z",
+  "repository": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4",
+  "implementation_modified": false,
+  "source_evidence": {
+    "artifact_path": "bus/artifacts/T06-R2.md",
+    "artifact_sha256": "3c7582c7e0b48cce5cfe3b6fc47d9e3396d0599bc01f55ce553b253ee3f90d9b",
+    "evidence_path": "bus/evidence/T06-R2.json",
+    "evidence_sha256": "a4e3e81b8586aae2345eeff8cc315862e53fc42d7a29561ae70dec40ed00b46f",
+    "root_cause_hash": "604a25cde551e723182b9a130043f7283b2c40852a1b84be6b52b5c1933f9c1e",
+    "recorded_execution_status": "done",
+    "recorded_verification_status": "self_verified",
+    "recorded_verdict": "PASS"
+  },
+  "acceptance_criteria": [
+    {"id": "T06R-A1", "status": "PASS", "detail": "Focused and full tests passed without code changes."},
+    {"id": "T06R-A2", "status": "PASS", "detail": "A missing historical PIT policy exited 2 and did not create the snapshot output directory."},
+    {"id": "T06R-A3", "status": "PASS", "detail": "Decision-date membership changed from industry-a to industry-b while current metadata stayed current-a; live-current snapshots were rejected by research paths."}
+  ],
+  "direct_evidence": [
+    "Missing historical policy: CLI exited 2; stderr required an explicit PIT policy or config/pit-universe.v32.json; no snapshot output directory was created.",
+    "Historical membership: 000001 resolved as industry-a on 2026-01-20 and industry-b on 2026-01-25 while current metadata remained current-a.",
+    "Historical snapshot manifest: pit_ready=true and industry_source=pit_membership.",
+    "Live-current manifest: snapshot_mode=live_current, industry_source=current_metadata, industry_lookahead_safe=false, pit_ready=false.",
+    "Live-current snapshots were rejected by discovery, portfolio backtest, research loop, parameter optimization, and snapshot binding."
+  ],
+  "command_results": [
+    {"command": "python -m pytest -o addopts= -q tests/test_history_features.py tests/test_pit_universe.py tests/test_daily_run.py tests/test_data_rebuild.py", "exit_code": 0, "stdout": "18 passed in 8.96s", "result": "focused tests passed"},
+    {"command": "python -m pytest -o addopts= -q", "exit_code": 0, "stdout": "230 passed in 65.37s (0:01:05)", "result": "full suite passed"},
+    {"command": "python -m compileall -q src", "exit_code": 0, "stdout": "", "result": "passed with no output"}
+  ],
+  "changed_file_hashes": {
+    "algorithm": "SHA-256",
+    "files": {
+      "src/kinace_v3/cli.py": "e6751bd981fc6dc2aff46a1336d83bbb017dc13e8c73a4491791185e3174fa38",
+      "src/kinace_v3/daily_run.py": "6aec6bc490f5bd08e7809ac195a6d2004c6568a692d07b39b6d4cea28ad61fd9",
+      "src/kinace_v3/data_rebuild.py": "6b5c119c453d0d65ea60fdc87f44b9ec5634a6f09ed99a5d407e3640646ba134",
+      "src/kinace_v3/history_features.py": "8e111eb4ec48ddb17a2147c09f0e74ca51a89628637a25d13f05d48c2800a095",
+      "src/kinace_v3/optimization.py": "09250f499c1304e417122b4f920253a395f33d55bc6ade98ce700bf7257c2290",
+      "src/kinace_v3/pit_universe.py": "6da33fa2e1eaec3a1efd840f2c5e13e4e426813813af92b24ff69bc526ffa0f4",
+      "src/kinace_v3/portfolio_backtest.py": "0db6d17be96e004ac550112ad48417ddea9ce5f5744ee39f6dd167efc510509b",
+      "src/kinace_v3/research_audit.py": "33fe9d89810679b76b336494ff62c1319dd5783ed90a6d13b6c9d1bde508f1c3",
+      "src/kinace_v3/search.py": "5e428323acc227508bf5e860b87a0b32767083c0304d2177fde0bb351827f3b1",
+      "src/kinace_v3/trial_backtest.py": "baa942b15a642d45b1f4a89e1757e9a144da716db538ebb5622db4e9ab0956f1",
+      "tests/test_cli.py": "5923235c72cd22ffe5f2cca353291254863c58beb2e3b12f8eb9d0954123901a",
+      "tests/test_daily_run.py": "b7dccd2dbb0f6046900f8d8935b4b86dcdf999f1451e7a43aad055f04ad3c850",
+      "tests/test_data_rebuild.py": "fcde417d93851fed72dadc8b955785dfac782bf1cc12b9eb2d1892c8f8fa242a",
+      "tests/test_history_features.py": "631ef604797477caaa567e835ce87956a698e6576653b661b7789bf0f46d9759",
+      "tests/test_pit_universe.py": "fe0435f5a2ef05809b4a2b94b9f1f29d4afc61d9bd7cf16fdd0387e0a302e8c1"
+    }
+  },
+  "original_artifact_hashes": {
+    "bus/prompts/T06.md": "226f17f51e601ca32c7154b64d002d152475900f737d8c186aa1fab2db2dab2c",
+    "bus/evidence/T06.json": "579711964c37406f979da8ba2c603729eca6bc607d1e76e20d2f18ce4d64748f",
+    "bus/artifacts/T06.md": "7023096196fa71fa7ce21b4c9c0c4acb49ae24b58cb35914f1b856633560eb55"
+  },
+  "assumptions": [
+    "T01 baseline evidence remains immutable and T03, T04, and T05 implementations are present.",
+    "Missing-policy behavior was tested with an explicit nonexistent path because the repository default policy exists.",
+    "Direct verification used isolated temporary SQLite and snapshot fixtures; formal data and holdout data were not opened."
+  ],
+  "key_uncertainties": [
+    "The low-level load_feature_snapshot_artifact function is not itself a policy gate; protection depends on historical entry points routing through snapshot discovery and validation.",
+    "The saved T06 evidence remains in its original blocked machine-gate state because T06-R2 was required not to modify it."
+  ],
+  "reproduction_commands": [
+    "python -m pytest -o addopts= -q tests/test_history_features.py tests/test_pit_universe.py tests/test_daily_run.py tests/test_data_rebuild.py",
+    "python -m pytest -o addopts= -q",
+    "python -m compileall -q src"
+  ],
+  "counterexample_conclusion": "No counterexample was found within the guarded historical paths. Historical mode did not fall back to current metadata, same-day membership switching was honored, and live-current snapshots were rejected before research processing."
+}

@@ -1,0 +1,442 @@
+{
+  "artifact_type": "kinace_v3_adversarial_fixture_set",
+  "schema_version": 1,
+  "description": "Deterministic sandbox-only execution-framework rejection fixtures.",
+  "fixtures": [
+    {
+      "id": "historical_industry_leakage",
+      "injection": "Historical snapshots use current or unavailable industry data.",
+      "expected_rejection_reason": "historical_industry_leakage",
+      "case_rejection_reasons": ["historical_industry_leakage"],
+      "input": {
+        "cases": [
+          {
+            "name": "current_industry_backfill",
+            "snapshot_mode": "historical",
+            "pit_ready": false,
+            "industry_lookahead_safe": false,
+            "industry_source": "current_metadata",
+            "pit_policy_hash": "policy-current",
+            "industry_coverage": 1.0
+          },
+          {
+            "name": "missing_pit_policy",
+            "snapshot_mode": "historical",
+            "pit_ready": true,
+            "industry_lookahead_safe": true,
+            "industry_source": "pit_membership",
+            "pit_policy_hash": null,
+            "industry_coverage": 1.0
+          }
+        ]
+      }
+    },
+    {
+      "id": "malformed_market_bars",
+      "injection": "Market bars are out of order, duplicated, or non-finite.",
+      "expected_rejection_reason": "invalid_market_bars",
+      "case_rejection_reasons": [
+        "market_bars_out_of_order",
+        "market_bars_duplicate",
+        "market_bars_non_finite"
+      ],
+      "input": {
+        "out_of_order_rows": [
+          {
+            "trade_date": "2024-01-03",
+            "open": 10.2,
+            "high": 10.8,
+            "low": 10.0,
+            "close": 10.6,
+            "volume": 10000.0,
+            "is_suspended": false,
+            "is_limit_up": false,
+            "is_limit_down": false
+          },
+          {
+            "trade_date": "2024-01-01",
+            "open": 10.0,
+            "high": 10.5,
+            "low": 9.5,
+            "close": 10.2,
+            "volume": 10000.0,
+            "is_suspended": false,
+            "is_limit_up": false,
+            "is_limit_down": false
+          },
+          {
+            "trade_date": "2024-01-02",
+            "open": 10.2,
+            "high": 10.7,
+            "low": 10.0,
+            "close": 10.5,
+            "volume": 10000.0,
+            "is_suspended": false,
+            "is_limit_up": false,
+            "is_limit_down": false
+          }
+        ],
+        "duplicate_rows": [
+          {
+            "trade_date": "2024-01-01",
+            "open": 10.0,
+            "high": 10.5,
+            "low": 9.5,
+            "close": 10.2,
+            "volume": 10000.0,
+            "is_suspended": false,
+            "is_limit_up": false,
+            "is_limit_down": false
+          },
+          {
+            "trade_date": "2024-01-01",
+            "open": 10.0,
+            "high": 10.5,
+            "low": 9.5,
+            "close": 10.2,
+            "volume": 10000.0,
+            "is_suspended": false,
+            "is_limit_up": false,
+            "is_limit_down": false
+          }
+        ],
+        "non_finite_rows": [
+          {
+            "trade_date": "2024-01-01",
+            "open": 10.0,
+            "high": 10.5,
+            "low": 9.5,
+            "close": 10.2,
+            "volume": 10000.0,
+            "is_suspended": false,
+            "is_limit_up": false,
+            "is_limit_down": false
+          },
+          {
+            "trade_date": "2024-01-02",
+            "open": 10.2,
+            "high": 10.7,
+            "low": 10.0,
+            "close": 10.5,
+            "volume": 10000.0,
+            "is_suspended": false,
+            "is_limit_up": false,
+            "is_limit_down": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "invalid_ohlc_or_status",
+      "injection": "OHLC is inconsistent or an execution-status field is missing.",
+      "expected_rejection_reason": "invalid_ohlc_or_status",
+      "case_rejection_reasons": ["ohlc_inconsistent", "ohlc_status_missing"],
+      "input": {
+        "missing_status_field": "is_limit_down",
+        "inconsistent_ohlc_rows": [
+          {
+            "trade_date": "2024-01-01",
+            "open": 10.0,
+            "high": 10.5,
+            "low": 9.5,
+            "close": 10.2,
+            "volume": 10000.0,
+            "is_suspended": false,
+            "is_limit_up": false,
+            "is_limit_down": false
+          },
+          {
+            "trade_date": "2024-01-02",
+            "open": 10.2,
+            "high": 10.1,
+            "low": 10.0,
+            "close": 10.5,
+            "volume": 10000.0,
+            "is_suspended": false,
+            "is_limit_up": false,
+            "is_limit_down": false
+          }
+        ],
+        "missing_status_rows": [
+          {
+            "trade_date": "2024-01-01",
+            "open": 10.0,
+            "high": 10.5,
+            "low": 9.5,
+            "close": 10.2,
+            "volume": 10000.0,
+            "is_suspended": false,
+            "is_limit_up": false,
+            "is_limit_down": false
+          },
+          {
+            "trade_date": "2024-01-02",
+            "open": 10.2,
+            "high": 10.7,
+            "low": 10.0,
+            "close": 10.5,
+            "volume": 10000.0,
+            "is_suspended": false,
+            "is_limit_up": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "terminal_unsellable_holding",
+      "injection": "A terminal holding is suspended, limit-down, missing a bar, or has no volume.",
+      "expected_rejection_reason": "terminal_unsellable_holding",
+      "case_rejection_reasons": ["terminal_unsellable_holding"],
+      "input": {
+        "cases": ["suspended", "limit_down", "missing_bar", "zero_volume"]
+      }
+    },
+    {
+      "id": "adjusted_price_drift",
+      "injection": "Extending the adjusted-price window rebases completed research bars.",
+      "expected_rejection_reason": "adjusted_price_drift",
+      "case_rejection_reasons": ["adjusted_price_drift"],
+      "input": {
+        "baseline_adjustment_basis_date": "2024-01-03",
+        "extended_adjustment_basis_date": "2024-01-04",
+        "tolerance": 1e-12,
+        "baseline_bars": {
+          "000001": [
+            {
+              "trade_date": "2024-01-01",
+              "open": 100.0,
+              "high": 102.0,
+              "low": 99.0,
+              "close": 100.0
+            },
+            {
+              "trade_date": "2024-01-02",
+              "open": 105.0,
+              "high": 111.0,
+              "low": 104.0,
+              "close": 110.0
+            },
+            {
+              "trade_date": "2024-01-03",
+              "open": 115.0,
+              "high": 122.0,
+              "low": 114.0,
+              "close": 121.0
+            }
+          ]
+        },
+        "extended_bars": {
+          "000001": [
+            {
+              "trade_date": "2024-01-01",
+              "open": 80.0,
+              "high": 81.6,
+              "low": 79.2,
+              "close": 80.0
+            },
+            {
+              "trade_date": "2024-01-02",
+              "open": 84.0,
+              "high": 88.8,
+              "low": 83.2,
+              "close": 88.0
+            },
+            {
+              "trade_date": "2024-01-03",
+              "open": 92.0,
+              "high": 97.6,
+              "low": 91.2,
+              "close": 96.8
+            },
+            {
+              "trade_date": "2024-01-04",
+              "open": 100.0,
+              "high": 101.0,
+              "low": 99.0,
+              "close": 100.0
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "benchmark_return_above_50pct",
+      "injection": "A raw equal-weight benchmark contains a return above 50 percent.",
+      "expected_rejection_reason": "benchmark_return_above_50pct",
+      "case_rejection_reasons": ["benchmark_return_above_50pct"],
+      "input": {
+        "decision_date": "2024-01-01",
+        "signal_code": "999999",
+        "config": {
+          "initial_cash": 100000.0,
+          "lot_size": 100
+        },
+        "bars": {
+          "000001": [
+            {
+              "trade_date": "2024-01-01",
+              "open": 1.0,
+              "high": 1.0,
+              "low": 1.0,
+              "close": 1.0,
+              "volume": 10000.0,
+              "is_suspended": false,
+              "is_limit_up": false,
+              "is_limit_down": false
+            },
+            {
+              "trade_date": "2024-01-02",
+              "open": 2.2,
+              "high": 2.2,
+              "low": 2.2,
+              "close": 2.2,
+              "volume": 10000.0,
+              "is_suspended": false,
+              "is_limit_up": false,
+              "is_limit_down": false
+            }
+          ],
+          "000002": [
+            {
+              "trade_date": "2024-01-01",
+              "open": 1.0,
+              "high": 1.0,
+              "low": 1.0,
+              "close": 1.0,
+              "volume": 10000.0,
+              "is_suspended": false,
+              "is_limit_up": false,
+              "is_limit_down": false
+            },
+            {
+              "trade_date": "2024-01-02",
+              "open": 1.0,
+              "high": 1.0,
+              "low": 1.0,
+              "close": 1.0,
+              "volume": 10000.0,
+              "is_suspended": false,
+              "is_limit_up": false,
+              "is_limit_down": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "short_sample_high_sharpe",
+      "injection": "One- or two-session return samples imply an unstable high Sharpe.",
+      "expected_rejection_reason": "short_sample_high_sharpe",
+      "case_rejection_reasons": ["short_sample_high_sharpe"],
+      "input": {
+        "min_observation_sessions": 60,
+        "min_trade_count": 1,
+        "trade_count": 1,
+        "target_sharpe": 1.0,
+        "N_trials": 20,
+        "statistics_seed": 20260926,
+        "cases": [
+          {"name": "one_session", "returns": [0.12]},
+          {"name": "two_sessions", "returns": [0.12, 0.11]}
+        ]
+      }
+    },
+    {
+      "id": "trial_ledger_or_budget_violation",
+      "injection": "The trial ledger contains an unregistered trial and exceeds its frozen budget.",
+      "expected_rejection_reason": "trial_ledger_or_budget_violation",
+      "case_rejection_reasons": ["unregistered_trial", "trial_budget_exceeded"],
+      "input": {
+        "registered_trial_ids": ["trial-001", "trial-002"],
+        "ledger_trial_ids": ["trial-001", "trial-002", "trial-003"],
+        "trial_budget": 2
+      }
+    },
+    {
+      "id": "repeated_holdout_read",
+      "injection": "The same protocol and holdout window are opened a second time.",
+      "expected_rejection_reason": "holdout_consumed",
+      "case_rejection_reasons": ["holdout_consumed"],
+      "input": {
+        "candidate": "sandbox-candidate-001",
+        "second_candidate": "sandbox-candidate-002",
+        "protocol": "sandbox-protocol-001",
+        "window": {
+          "start": "2026-01-01",
+          "end": "2026-03-01",
+          "sessions": 60
+        },
+        "timestamp": "2026-09-26T00:00:00Z"
+      }
+    },
+    {
+      "id": "formal_sandbox_crossover",
+      "injection": "A formal path overlaps the sandbox and a formal trial ID appears in the sandbox ledger.",
+      "expected_rejection_reason": "formal_sandbox_crossover",
+      "case_rejection_reasons": [
+        "formal_sandbox_path_crossover",
+        "formal_sandbox_trial_id_crossover"
+      ],
+      "input": {
+        "formal_trial_ids": ["formal-trial-001", "formal-trial-002"],
+        "sandbox_trial_ids": [
+          "sandbox-adversarial-001",
+          "formal-trial-002"
+        ]
+      }
+    },
+    {
+      "id": "nondeterministic_gate_decision",
+      "injection": "Identical gate fingerprints produce different decisions.",
+      "expected_rejection_reason": "nondeterministic_gate_decision",
+      "case_rejection_reasons": ["nondeterministic_gate_decision"],
+      "input": {
+        "observations": [
+          {
+            "fingerprint": "snapshot-code-config-seed-001",
+            "decision": "rejected"
+          },
+          {
+            "fingerprint": "snapshot-code-config-seed-001",
+            "decision": "passed"
+          }
+        ],
+        "determinism_control_returns": [
+          0.001,
+          -0.001,
+          0.001,
+          -0.001,
+          0.001,
+          -0.001,
+          0.001,
+          -0.001,
+          0.001,
+          -0.001,
+          0.001,
+          -0.001
+        ]
+      }
+    },
+    {
+      "id": "pure_noise_candidate",
+      "injection": "A candidate has near-zero information coefficients and inconsistent folds.",
+      "expected_rejection_reason": "pure_noise_candidate",
+      "case_rejection_reasons": ["pure_noise_candidate"],
+      "input": {
+        "information_coefficients": [
+          0.002,
+          -0.003,
+          0.001,
+          -0.002,
+          0.003,
+          -0.001,
+          0.002,
+          -0.002
+        ],
+        "fold_sharpes": [0.1, -0.2, 0.05, -0.1, -0.15],
+        "minimum_mean_abs_ic": 0.02,
+        "minimum_positive_fold_ratio": 0.6
+      }
+    }
+  ]
+}

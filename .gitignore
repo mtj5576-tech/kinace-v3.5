@@ -216,3 +216,18 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Kinace generated research artifacts
+logs/
+runtime/
+release/kinace-v3.2.2core/
+release/kinace-v3.3core/
+outputs/replays/
+reports/scheduler/
+reports/tushare_probe*.json
+reports/_v32_report_assets/
+reports/_v32_report_render/
+reports/baseline_v32_bars_*.json
+reports/baseline_v32_replay_*.json
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm

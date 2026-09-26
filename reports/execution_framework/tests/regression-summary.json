@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "task_id": "T20",
+  "status": "passed",
+  "candidate_revision": {
+    "base_commit": "e01131f4be3bc0ab54f14665919b60155795c6fc",
+    "worktree_content_sha256": "4f4b850a14ade490294ff9b8f2190b5a78a0a47046522ceead859db27ff435c5",
+    "hash_algorithm": "SHA-256",
+    "hash_scope": "Relative path and SHA-256 for 168 files under src, tests, docs, config, scripts, plus root project files; __pycache__ and .pyc files excluded.",
+    "python_version": "Python 3.10.11"
+  },
+  "commands": [
+    {
+      "id": "full_test_suite",
+      "command": "python -m pytest -q",
+      "working_directory": "C:/Users/ZhuanZ/Documents/ChatGPT/kinace/target-kinace-v3.4",
+      "exit_code": 0,
+      "tests_collected": 277,
+      "tests_passed": 277,
+      "tests_failed": 0,
+      "tests_skipped": 0,
+      "tests_errored": 0,
+      "output_summary": "The exact command emitted 277 passing progress markers followed by EXIT_CODE=0. The repository pytest addopts also supplies -q, so the exact command has no final pytest count line.",
+      "output_path": "reports/execution_framework/tests/full-test.log",
+      "output_sha256": "4e34127f1f3ae705c7d7fbe92a6c3121fce8b4ac3ce581ebee7aa5ec6336670d"
+    },
+    {
+      "id": "test_collection",
+      "command": "python -m pytest --collect-only -o addopts='' -q",
+      "exit_code": 0,
+      "tests_collected": 277,
+      "output_summary": "277 tests collected in 0.26s"
+    },
+    {
+      "id": "compileall",
+      "command": "python -m compileall -q src",
+      "exit_code": 0,
+      "output_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "output_summary": "No output"
+    },
+    {
+      "id": "cli_help",
+      "command": ".\\run.ps1 --help",
+      "exit_code": 0,
+      "output_sha256": "94d338e9693f18ad9d2350e068309bb9a11c2924c77e251632707744b39b377d",
+      "output_lines": 101,
+      "output_summary": "Help rendered successfully and exposed the execution-framework commands: sandbox-init, sandbox-verify, sandbox-adversarial, evidence-freeze, evidence-verify, and research-qualify."
+    }
+  ],
+  "focused_execution_framework_checks": {
+    "command": "python -m pytest -q -o addopts='' tests/test_adversarial_fixture_suite.py tests/test_holdout_access.py tests/test_execution_framework_evidence.py tests/test_synthetic_sandbox.py tests/test_research_qualification.py",
+    "exit_code": 0,
+    "tests_passed": 33,
+    "tests_failed": 0,
+    "tests_skipped": 0,
+    "output": "33 passed in 3.83s",
+    "output_sha256": "cf0ef86e9841fa16bf5962148cce63f37c6ccf3c7743208647dd8907b7852b41"
+  },
+  "external_data_tests": {
+    "unavailable": [],
+    "skipped_in_full_suite": 0,
+    "note": "No external-data test was skipped or marked unavailable. Formal raw-source, PIT, and holdout reconstruction is intentionally downstream in T21 and was not attempted here."
+  },
+  "regressions": {
+    "fixed": [],
+    "implementation_changed": false
+  },
+  "formal_evidence_rebuild": {
+    "executed": false,
+    "reason": "T20 verifies the frozen candidate before formal reconstruction; no formal-evidence artifact was rebuilt."
+  }
+}

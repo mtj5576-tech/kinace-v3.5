@@ -1,0 +1,37 @@
+{
+  "artifact_type": "kinace_v3_clean_room_cold_start",
+  "status": "passed",
+  "created_at_utc": "2026-09-26T17:21:35.5549836Z",
+  "source_revision": "e01131f4be3bc0ab54f14665919b60155795c6fc",
+  "database": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\outputs\\coldstart\\kinace.sqlite3",
+  "database_sha256": "f54b497dc8120d23050d4435ed78294ff97ab0d9b276873750e175dea14c51ba",
+  "commands": {
+    "db_init": {
+      "path": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\outputs\\coldstart\\db-init.log",
+      "sha256": "b978c868563f95c1bfad2cd1710c8672c0e733dfb964544c087850800f04b5c2"
+    },
+    "doctor": {
+      "path": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\outputs\\coldstart\\doctor.log",
+      "sha256": "a20581c6ebff8a8113739c5d24f4514a57d27fc4ffec71ae726d9751c4cb2172"
+    },
+    "sandbox_init": {
+      "path": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\outputs\\coldstart\\sandbox-init.json",
+      "sha256": "0852ce34f57f2e944fafee378c964175071a7ae4f40bbd39f415a9c19ebd3099"
+    },
+    "sandbox_verify": {
+      "path": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\outputs\\coldstart\\sandbox-verify.json",
+      "sha256": "9c771a951352803693da57b3087279b354e1878a52bbb923b939ad3f61bc2f2b"
+    },
+    "adversarial": {
+      "path": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\outputs\\coldstart\\adversarial-results.json",
+      "sha256": "b156b4cfae42ec758c4407c747aa3f83b8dcfbff258ee1091e00cd8f1e194207"
+    }
+  },
+  "holdout_access_count": 0,
+  "production_ready": false,
+  "production_changed": false,
+  "notes": [
+    "Cold start used isolated database, sandbox, and synthetic adversarial inputs.",
+    "Full formal-data research promotion was not performed because reconstruction research-loop returned no_eligible_challenger."
+  ]
+}

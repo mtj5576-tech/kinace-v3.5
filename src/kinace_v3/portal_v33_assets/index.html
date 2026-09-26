@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#eef1ed">
+  <title>Kinace V3.5 | Read-only Research Ledger</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <header class="masthead">
+    <a class="identity" href="/" aria-label="Kinace V3.5 只读研究账本首页">
+      <span class="identity-mark" aria-hidden="true">K</span>
+      <span>
+        <strong>KINACE</strong>
+        <small>V3.5 / Research Ledger</small>
+      </span>
+    </a>
+    <div class="masthead-actions">
+      <span id="connection" class="connection is-loading" role="status">读取中</span>
+      <button id="refresh" class="text-button" type="button">刷新</button>
+    </div>
+  </header>
+
+  <div class="workspace">
+    <aside class="rail" aria-label="研究账本视图">
+      <div class="rail-label">研究账本</div>
+      <nav id="section-tabs" class="section-tabs" role="tablist" aria-label="研究账本视图">
+        <button id="overview-tab" class="section-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="overview" data-section="overview">总览</button>
+        <button id="strategy-tab" class="section-tab" type="button" role="tab" aria-selected="false" aria-controls="strategy" data-section="strategy" tabindex="-1">策略</button>
+        <button id="portfolio-tab" class="section-tab" type="button" role="tab" aria-selected="false" aria-controls="portfolio" data-section="portfolio" tabindex="-1">组合</button>
+        <button id="data-tab" class="section-tab" type="button" role="tab" aria-selected="false" aria-controls="data" data-section="data" tabindex="-1">数据</button>
+      </nav>
+      <div class="rail-foot">
+        <span class="readonly-badge">READ ONLY</span>
+        <span id="system-version">V3.5</span>
+      </div>
+    </aside>
+
+    <main id="main-content" class="main-content" tabindex="-1">
+      <section class="brief" aria-labelledby="brief-title">
+        <div class="brief-copy">
+          <p class="kicker">A-SHARE / DECISION LEDGER</p>
+          <h1 id="brief-title">只读研究账本</h1>
+          <p class="brief-note">策略、组合与数据质量的同一决策口径。</p>
+        </div>
+        <div class="brief-status">
+          <span class="brief-label">最新决策日</span>
+          <strong id="brief-date">—</strong>
+          <span id="brief-update" class="brief-update" aria-live="polite">等待读取运行状态</span>
+        </div>
+      </section>
+
+      <div id="error-banner" class="error-banner" role="alert" hidden></div>
+
+      <section id="overview" class="view is-active" role="tabpanel" aria-labelledby="overview-tab"></section>
+      <section id="strategy" class="view" role="tabpanel" aria-labelledby="strategy-tab" hidden></section>
+      <section id="portfolio" class="view" role="tabpanel" aria-labelledby="portfolio-tab" hidden></section>
+      <section id="data" class="view" role="tabpanel" aria-labelledby="data-tab" hidden></section>
+
+      <footer class="footer">
+        <span id="generated">等待本机数据</span>
+        <span>本地读取 · 不执行交易 · 不修改模型</span>
+      </footer>
+    </main>
+  </div>
+
+  <noscript>
+    <div class="noscript">此页面需要 JavaScript 读取本机只读接口。</div>
+  </noscript>
+  <script src="/assets/app.js"></script>
+</body>
+</html>

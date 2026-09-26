@@ -1,0 +1,182 @@
+{
+  "artifact_type": "kinace_v3_reconstruction_manifest",
+  "created_at_utc": "2026-09-26T17:19:56.5177385Z",
+  "status": "evidence_rebuilt",
+  "database": {
+    "path": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\outputs\\reconstruction\\kinace_v3_2.sqlite3",
+    "sha256": "1a5f87fb46684a5829ce8f5d111843ef101a8621d8181fc54291bdc1115e21cb"
+  },
+  "snapshot_set": {
+    "path": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\outputs\\reconstruction\\snapshots_canonical\\manifest.json",
+    "sha256": "cb7229369330a9026108818c73e6e90d1bbe071587e1bccb3c46f5e6aa4bbef8",
+    "snapshot_set_id": "cb7229369330a9026108818c73e6e90d1bbe071587e1bccb3c46f5e6aa4bbef8",
+    "snapshot_count": 460
+  },
+  "audit": {
+    "path": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\reports\\execution_framework\\reconstruction\\research-audit.json",
+    "sha256": "6ae95e4fcaaffde2a6ec75827010f93f503434d6f3a1845932a9ac8fd52bd4dd",
+    "status": "passed",
+    "research_eligible": true,
+    "findings": [
+      {
+        "code": "price_discontinuity",
+        "evidence": {
+          "jumps": [
+            {
+              "close": 117.35058594303528,
+              "daily_return": -0.2998175063064721,
+              "is_limit_down": false,
+              "is_limit_up": false,
+              "previous_close": 167.6,
+              "previous_date": "2026-05-29",
+              "previous_source": "tushare_daily_adj",
+              "severity": "high",
+              "source": "tushare_daily_adj",
+              "trade_date": "2026-06-01",
+              "ts_code": "688018"
+            },
+            {
+              "close": 17.668749256689797,
+              "daily_return": -0.2994151761820064,
+              "is_limit_down": false,
+              "is_limit_up": false,
+              "previous_close": 25.22,
+              "previous_date": "2026-05-29",
+              "previous_source": "tushare_daily_adj",
+              "severity": "high",
+              "source": "tushare_daily_adj",
+              "trade_date": "2026-06-01",
+              "ts_code": "301363"
+            },
+            {
+              "close": 61.31868085683297,
+              "daily_return": -0.29881439843530055,
+              "is_limit_down": false,
+              "is_limit_up": false,
+              "previous_close": 87.45,
+              "previous_date": "2026-04-30",
+              "previous_source": "tushare_daily_adj",
+              "severity": "high",
+              "source": "tushare_daily_adj",
+              "trade_date": "2026-05-06",
+              "ts_code": "002595"
+            },
+            {
+              "close": 49.7798290548254,
+              "daily_return": -0.2968950698470989,
+              "is_limit_down": false,
+              "is_limit_up": false,
+              "previous_close": 70.8,
+              "previous_date": "2025-05-30",
+              "previous_source": "tushare_daily_adj",
+              "severity": "high",
+              "source": "tushare_daily_adj",
+              "trade_date": "2025-06-03",
+              "ts_code": "603195"
+            },
+            {
+              "close": 29.018263473053892,
+              "daily_return": -0.2966974436971911,
+              "is_limit_down": false,
+              "is_limit_up": false,
+              "previous_close": 41.26,
+              "previous_date": "2025-05-30",
+              "previous_source": "tushare_daily_adj",
+              "severity": "high",
+              "source": "tushare_daily_adj",
+              "trade_date": "2025-06-03",
+              "ts_code": "603283"
+            },
+            {
+              "close": 36.116602240737585,
+              "daily_return": -0.29485505101507803,
+              "is_limit_down": false,
+              "is_limit_up": false,
+              "previous_close": 51.21869240179421,
+              "previous_date": "2025-05-30",
+              "previous_source": "adjustment_rebase",
+              "severity": "high",
+              "source": "adjustment_rebase",
+              "trade_date": "2025-06-03",
+              "ts_code": "301489"
+            },
+            {
+              "close": 43.0011691591048,
+              "daily_return": -0.29378930597627206,
+              "is_limit_down": false,
+              "is_limit_up": false,
+              "previous_close": 60.89,
+              "previous_date": "2026-04-30",
+              "previous_source": "tushare_daily_adj",
+              "severity": "high",
+              "source": "tushare_daily_adj",
+              "trade_date": "2026-05-06",
+              "ts_code": "002335"
+            },
+            {
+              "close": 51.94884394104214,
+              "daily_return": -0.29340015200535674,
+              "is_limit_down": false,
+              "is_limit_up": false,
+              "previous_close": 73.51946662382521,
+              "previous_date": "2025-05-30",
+              "previous_source": "adjustment_rebase",
+              "severity": "high",
+              "source": "adjustment_rebase",
+              "trade_date": "2025-06-03",
+              "ts_code": "301631"
+            },
+            {
+              "close": 12.315648521505377,
+              "daily_return": -0.2930167324049727,
+              "is_limit_down": false,
+              "is_limit_up": false,
+              "previous_close": 17.42,
+              "previous_date": "2026-07-31",
+              "previous_source": "tushare_daily_adj",
+              "severity": "high",
+              "source": "tushare_daily_adj",
+              "trade_date": "2026-08-03",
+              "ts_code": "603093"
+            },
+            {
+              "close": 14.381297561517524,
+              "daily_return": -0.2926071046966293,
+              "is_limit_down": false,
+              "is_limit_up": false,
+              "previous_close": 20.33,
+              "previous_date": "2025-06-30",
+              "previous_source": "tushare_daily_adj",
+              "severity": "high",
+              "source": "tushare_daily_adj",
+              "trade_date": "2025-07-01",
+              "ts_code": "300861"
+            }
+          ]
+        },
+        "message": "116 suspicious price jumps exceed 21%",
+        "severity": "high"
+      },
+      {
+        "code": "candidate_execution_not_applicable",
+        "evidence": {},
+        "message": "preflight audit does not evaluate candidate-specific execution",
+        "severity": "info"
+      }
+    ]
+  },
+  "research_loop": {
+    "path": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\reports\\execution_framework\\reconstruction\\research-loop.json",
+    "sha256": "8415c5b4ba946948ca67e3ad0433fa3fa7b35808106dbfe9521c6fc99603f9f9",
+    "status": "no_eligible_challenger",
+    "candidate_count": 3,
+    "holdout_status": "not_run"
+  },
+  "rollback": {
+    "path": "D:\\kinacesqlv3.2\\backups\\kinace-v34-pre-T21-20260926",
+    "verified": true
+  },
+  "production_ready": false,
+  "production_changed": false,
+  "next_action": "awaiting_data_or_human_review"
+}

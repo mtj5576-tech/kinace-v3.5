@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kinace V3.5 | Read-only Dashboard</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div>
+      <div class="product">Kinace V3.5</div>
+      <div class="subtitle">Read-only Dashboard / 只读看板</div>
+    </div>
+    <div class="topbar-actions">
+      <span id="connection" class="status-pill neutral">连接中</span>
+      <button id="refresh" class="button" type="button">刷新数据</button>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section id="update-status" class="update-status neutral" aria-live="polite"></section>
+    <section id="summary" class="summary-grid" aria-label="核心状态"></section>
+
+    <nav class="tabs" aria-label="门户视图">
+      <button class="tab active" type="button" data-tab="overview">总览</button>
+      <button class="tab" type="button" data-tab="strategy">每日策略</button>
+      <button class="tab" type="button" data-tab="backtest">回测与交易</button>
+      <button class="tab" type="button" data-tab="research">研究闭环</button>
+      <button class="tab" type="button" data-tab="data">数据健康</button>
+    </nav>
+
+    <section id="overview" class="view active"></section>
+    <section id="strategy" class="view"></section>
+    <section id="backtest" class="view"></section>
+    <section id="research" class="view"></section>
+    <section id="data" class="view"></section>
+  </main>
+
+  <footer class="footer">
+    <span>只读模式</span>
+    <span id="generated">尚未加载</span>
+  </footer>
+  <script src="/assets/app.js"></script>
+</body>
+</html>

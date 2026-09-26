@@ -1,0 +1,110 @@
+{
+  "artifact_type": "kinace_v3_adversarial_independent_verification",
+  "schema_version": 1,
+  "task_id": "T19-R2",
+  "status": "passed",
+  "verdict": "PASS",
+  "generated_at_utc": "2026-09-26T14:52:19.9648718Z",
+  "repository": {
+    "root": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4",
+    "git_head": "e01131f4be3bc0ab54f14665919b60155795c6fc",
+    "python": "3.10.11"
+  },
+  "read_only": true,
+  "implementation_modified": false,
+  "inputs": {
+    "fixture_path": "tests/fixtures/adversarial_execution_framework.json",
+    "fixture_set_sha256": "af55a46a18453d01c6b5cd4a8c88b888fa796e1e93f5e4c8cfd7b601bad9c163",
+    "reference_result_path": "reports/execution_framework/adversarial/adversarial-results.json",
+    "reference_result_file_sha256": "638c96e7e04a7f4ed21ae47336bdd260a4245b66b7ac01b70166c943d7a806fa",
+    "result_path": "reports/execution_framework/verification/adversarial-results-r2.json",
+    "result_file_sha256": "638c96e7e04a7f4ed21ae47336bdd260a4245b66b7ac01b70166c943d7a806fa",
+    "formal_evidence_manifest_path": "reports/execution_framework/evidence/formal-evidence-manifest.json"
+  },
+  "commands": [
+    {
+      "command": "python -m pytest -q tests/test_adversarial_fixture_suite.py",
+      "exit_code": 0,
+      "stdout": "......                                                                   [100%]",
+      "result": "six focused tests passed"
+    },
+    {
+      "command": ".\\run.ps1 sandbox-adversarial --root .\\outputs\\sandbox --fixtures tests\\fixtures\\adversarial_execution_framework.json --output reports\\execution_framework\\verification\\adversarial-results-r2.json --json",
+      "exit_code": 0,
+      "result": "passed",
+      "injected_count": 12,
+      "rejected_count": 12,
+      "false_negative_count": 0,
+      "case_false_negative_count": 0,
+      "seed": 20260926,
+      "result_sha256": "e15b84d2c4cf561b8b7ee172ffa2be25ada6faffef689a78b24b995eead84d60",
+      "artifact_sha256": "638c96e7e04a7f4ed21ae47336bdd260a4245b66b7ac01b70166c943d7a806fa"
+    },
+    {
+      "command": ".\\run.ps1 sandbox-adversarial --root .\\outputs\\sandbox --fixtures tests\\fixtures\\adversarial_execution_framework.json --output reports\\execution_framework\\verification\\adversarial-results-r2.json --json",
+      "repeat_of_command_index": 1,
+      "exit_code": 0,
+      "result": "passed",
+      "injected_count": 12,
+      "rejected_count": 12,
+      "false_negative_count": 0,
+      "case_false_negative_count": 0,
+      "seed": 20260926,
+      "result_sha256": "e15b84d2c4cf561b8b7ee172ffa2be25ada6faffef689a78b24b995eead84d60",
+      "artifact_sha256": "638c96e7e04a7f4ed21ae47336bdd260a4245b66b7ac01b70166c943d7a806fa"
+    }
+  ],
+  "determinism": {
+    "seed": 20260926,
+    "result_sha256_equal": true,
+    "artifact_sha256_equal": true,
+    "fixture_decisions_equal": true,
+    "fixture_decisions": {
+      "historical_industry_leakage": "historical_industry_leakage",
+      "malformed_market_bars": "invalid_market_bars",
+      "invalid_ohlc_or_status": "invalid_ohlc_or_status",
+      "terminal_unsellable_holding": "terminal_unsellable_holding",
+      "adjusted_price_drift": "adjusted_price_drift",
+      "benchmark_return_above_50pct": "benchmark_return_above_50pct",
+      "short_sample_high_sharpe": "short_sample_high_sharpe",
+      "trial_ledger_or_budget_violation": "trial_ledger_or_budget_violation",
+      "repeated_holdout_read": "holdout_consumed",
+      "formal_sandbox_crossover": "formal_sandbox_crossover",
+      "nondeterministic_gate_decision": "nondeterministic_gate_decision",
+      "pure_noise_candidate": "pure_noise_candidate"
+    }
+  },
+  "formal_evidence": {
+    "manifest_file_sha256_before": "7baf8f11da887817ea9129b21388bf74ac759fab5921f9eb18fa59db52109d48",
+    "manifest_file_sha256_after": "7baf8f11da887817ea9129b21388bf74ac759fab5921f9eb18fa59db52109d48",
+    "manifest_sha256": "46a762979d75d5ca36e6f1f6080b333c0d4dda4db102825cdd3c22eb87b7195e",
+    "unchanged": true,
+    "observation": "evidence-verify currently exits 2 because the pre-existing external anchor sidecar is absent; no formal evidence was mutated."
+  },
+  "acceptance_criteria": [
+    {"id": "T19R-A1", "status": "PASS", "detail": "injected_count=12, rejected_count=12, false_negative_count=0 in both CLI runs."},
+    {"id": "T19R-A2", "status": "PASS", "detail": "Same seed produced identical result hash, artifact hash, and fixture decisions."},
+    {"id": "T19R-A3", "status": "PASS", "detail": "Formal manifest remained byte-identical at 7baf8f11da887817ea9129b21388bf74ac759fab5921f9eb18fa59db52109d48."},
+    {"id": "T19R-A4", "status": "PASS", "detail": "CE-R2, T05, T06-R2, and T08-R2 verification artifacts exist; T08-R2 was not rewritten."}
+  ],
+  "counterexamples": [
+    {"case": "wrong expected rejection reason", "conclusion": "detected; rejected_count falls to 11 and false_negative_count becomes 1"},
+    {"case": "missing required injection", "conclusion": "detected; fixture catalog fails closed"},
+    {"case": "same-seed nondeterminism", "conclusion": "not reproduced; both runs were byte-identical"}
+  ],
+  "counterexample_conclusion": "No adversarial counterexample was reproduced. All 12 injected failures were rejected with expected reasons and deterministic replay held.",
+  "assumptions": [
+    "The current working-tree adversarial implementation and fixture set are the candidate under verification.",
+    "Seed 20260926 is the required same-seed condition.",
+    "outputs/sandbox is isolated verification storage, not formal evidence."
+  ],
+  "key_uncertainties": [
+    "The focused pytest command was run once; CLI determinism was checked twice.",
+    "The external formal-evidence anchor is absent, so evidence-verify fails closed even though its manifest is unchanged.",
+    "The worktree has broad pre-existing changes; this verification covers the current uncommitted revision."
+  ],
+  "reproduction_commands": [
+    "python -m pytest -q tests/test_adversarial_fixture_suite.py",
+    ".\\run.ps1 sandbox-adversarial --root .\\outputs\\sandbox --fixtures tests\\fixtures\\adversarial_execution_framework.json --output reports\\execution_framework\\verification\\adversarial-results-r2.json --json"
+  ]
+}

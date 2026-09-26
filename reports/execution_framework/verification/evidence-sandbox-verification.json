@@ -1,0 +1,84 @@
+{
+  "artifact_type": "kinace_v3_evidence_sandbox_verification",
+  "schema_version": 1,
+  "task_id": "T05",
+  "status": "superseded_by_CE-R2",
+  "verdict": "PASS_AFTER_FOLLOW_UP",
+  "generated_at_utc": "2026-09-26T14:52:19.9648718Z",
+  "repository": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4",
+  "implementation_modified": false,
+  "recorded_evidence_verdict": "PASS",
+  "technical_verdict": "Two counterexamples were found at T05 time and later received source-level fixes tracked by CE-R2.",
+  "source_evidence": {
+    "artifact_path": "bus/artifacts/T05.md",
+    "artifact_sha256": "543a89278d7f69eaae3178cb2c2d6027f72eb760d78b398f6e3d72eb43ca7cb3",
+    "evidence_path": "bus/evidence/T05.json",
+    "evidence_sha256": "6533c9fa0684e2a41c659b43d7cbc226f7a7c961342cd346e7e65ced00f21ca0",
+    "root_cause_hash": "618ef5bf080f819921927047e3781457ac7e71b608474d5b383422b94f753f38"
+  },
+  "findings": [
+    {
+      "area": "formal evidence manifest metadata",
+      "result": "counterexample",
+      "detail": "production_ready, production_changed, holdout_access_count, code_commit, and code_version could be changed and the manifest checksum recomputed without independent comparison."
+    },
+    {
+      "area": "sandbox run_id traversal",
+      "result": "counterexample",
+      "detail": "An unsanitized run_id beginning with sandbox- could escape the outputs root into a formal or protected path."
+    },
+    {
+      "area": "formal/sandbox overlap resolver",
+      "result": "resisted",
+      "detail": "Equal, descendant, ancestor, case-alias, and symlink aliases of formal surfaces were rejected before writes."
+    },
+    {
+      "area": "cross-track ledger insertion",
+      "result": "resisted",
+      "detail": "Sandbox verification rejected records whose track was not sandbox, including missing track."
+    }
+  ],
+  "resolution": {
+    "follow_up_task": "CE-R2",
+    "follow_up_artifact": "reports/execution_framework/verification/CE-R2-verification.json",
+    "source_conclusion": "The current source contains both the external manifest anchor and the run_id regex plus containment guard. CE-R2 reported the fixes confirmed by source and test inspection, with runtime execution unavailable in its session."
+  },
+  "command_results": [
+    {
+      "command": ".\\run.ps1 evidence-verify --manifest reports/execution_framework/evidence/formal-evidence-manifest.json --json",
+      "exit_code": null,
+      "stdout": null,
+      "result": "Not executed in the T05 source session because subprocess execution was unavailable."
+    },
+    {
+      "command": ".\\run.ps1 sandbox-verify --root .\\outputs\\sandbox --json",
+      "exit_code": null,
+      "stdout": null,
+      "result": "Not executed in the T05 source session because subprocess execution was unavailable."
+    },
+    {
+      "command": "python -m pytest -q tests/test_execution_framework_evidence.py tests/test_synthetic_sandbox.py",
+      "exit_code": null,
+      "stdout": null,
+      "result": "Not executed in the T05 source session because subprocess execution was unavailable."
+    }
+  ],
+  "acceptance_criteria": [
+    {"id": "T05-A1", "status": "FAIL_AT_RECORDING", "detail": "All tamper and overlap attacks did not fail closed at T05 time: CE-1 and CE-2 were counterexamples. CE-R2 later reports both fixed at source level."},
+    {"id": "T05-A2", "status": "PASS", "detail": "The artifact separated proven behavior from assumptions and gave minimal reproductions for both bypasses."}
+  ],
+  "assumptions": [
+    "The raw T05 artifact and evidence are historical records and were not modified.",
+    "CE-R2 is the authorized follow-up for the two T05 counterexamples."
+  ],
+  "key_uncertainties": [
+    "T05 runtime command results are unavailable, so its findings are code-path replays rather than observed pytest output.",
+    "CE-R2 also records source-level confirmation without a live focused-test rerun."
+  ],
+  "reproduction_commands": [
+    ".\\run.ps1 evidence-verify --manifest reports/execution_framework/evidence/formal-evidence-manifest.json --json",
+    ".\\run.ps1 sandbox-verify --root .\\outputs\\sandbox --json",
+    "python -m pytest -q tests/test_execution_framework_evidence.py tests/test_synthetic_sandbox.py"
+  ],
+  "counterexample_conclusion": "The original T05 verification did find two counterexamples: rehashed manifest metadata passed verification, and an unsafe run_id could escape outputs. CE-R2 source follow-up reports both guards fixed; the historical PASS verdict must be read with those findings and the later requalification."
+}

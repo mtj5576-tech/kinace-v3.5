@@ -1,0 +1,139 @@
+{
+  "artifact_type": "kinace_v3_p0_p1_peer_review",
+  "schema_version": 1,
+  "task_id": "T14",
+  "reviewer": "deepseek-independent",
+  "verification_mode": "strict",
+  "method": "direct_source_inspection_and_independent_counterexample_replay",
+  "environment_limitation": "pwsh/glob/grep unavailable this session; pytest not re-executed; verdicts are code-path-level replays with file/line evidence and are independent of implementer-authored tests.",
+  "overall_conclusion": "7 of 7 confirmed findings fixed; 3 residual non-blocking issues (1 Medium, 2 Low).",
+  "findings": [
+    {
+      "id": 1,
+      "confirmed_finding": "Historical industry PIT must fail closed",
+      "task": "T06",
+      "verdict": "pass",
+      "evidence": [
+        "src/kinace_v3/pit_universe.py:121-181 resolve_pit_policy (historical requires explicit policy/file; live_current forced current_proxy + lookahead_safe=false + pit_ready=false)",
+        "src/kinace_v3/history_features.py:468-475 build_history_snapshots resolves policy before output",
+        "src/kinace_v3/daily_run.py:315-346,761-787 snapshot stage resolves policy and enforces pit_ready/lookahead_safe",
+        "src/kinace_v3/data_rebuild.py:148-168 rebuild resolves policy",
+        "src/kinace_v3/portfolio_backtest.py:129-154 rejects pit_ready=false or lookahead_safe=false"
+      ],
+      "counterexample": "historical build with no policy file -> PitUniverseError raised before output; live_current only reads current metadata and is marked lookahead-unsafe",
+      "residual": "none"
+    },
+    {
+      "id": 2,
+      "confirmed_finding": "Full-bar validation (remove shape fast path)",
+      "task": "T07",
+      "verdict": "pass",
+      "evidence": [
+        "src/kinace_v3/trial_backtest.py:246-312 normalize_market_bars validates every row: code, ISO date, positive finite OHLC, high/low consistency, non-negative finite volume, explicit booleans, duplicate rejection, canonical sort"
+      ],
+      "counterexample": "first row valid + later duplicate/out-of-order/invalid rows -> now rejected/sorted instead of pass-through",
+      "residual": "none"
+    },
+    {
+      "id": 3,
+      "confirmed_finding": "Terminal positions (mark-to-market vs liquidated)",
+      "task": "T08",
+      "verdict": "pass",
+      "evidence": [
+        "src/kinace_v3/trial_backtest.py:1197-1216 final liquidation skips unsellable holdings (no fabricated end_of_backtest)",
+        "src/kinace_v3/trial_backtest.py:1218-1243 open_positions with unsellable_reason",
+        "src/kinace_v3/trial_backtest.py:606-616 closed_trade_stats from completed exits only",
+        "src/kinace_v3/trial_backtest.py:619-652 mark_to_market_equity = total_assets",
+        "src/kinace_v3/optimization.py:334-337 objective binds equity_basis=mark_to_market"
+      ],
+      "counterexample": "final-day suspended holding -> trade_count=0, positions=1, mark-to-market includes position, no end_of_backtest trade",
+      "residual": "none"
+    },
+    {
+      "id": 4,
+      "confirmed_finding": "Raw/adjusted price semantics",
+      "task": "T09+T10",
+      "verdict": "pass",
+      "evidence": [
+        "src/kinace_v3/data_collection/providers/tushare_market_provider.py:299-398 raw OHLC/pre_close/vol/amount and raw-derived limits preserved",
+        "src/kinace_v3/data_collection/providers/tushare_market_provider.py:283-297 adj_factor stored separately with adjustment_basis_date",
+        "src/kinace_v3/price_basis.py:215-278 derive_adjusted_bars leaves raw untouched",
+        "src/kinace_v3/trial_backtest.py:384-388 execution must be raw; research must be adjusted/total_return",
+        "src/kinace_v3/research_protocol.py:87-108,357-359 EXECUTION_SEMANTICS in protocol identity"
+      ],
+      "counterexample": "extend end_date across split -> raw OHLC/limits/min_close unchanged (raw provider skips rebasing)",
+      "residual": "R1 (adjustment_basis_date recorded as final but ignored; derivation uses earliest factor)"
+    },
+    {
+      "id": 5,
+      "confirmed_finding": "Membership snapshot/interval semantics",
+      "task": "T11",
+      "verdict": "pass",
+      "evidence": [
+        "src/kinace_v3/data_collection/models.py:120-134 _membership_kind (index_weight->snapshot, index_member->interval)",
+        "src/kinace_v3/data_collection/providers/tushare_provider.py:640-671 index_weight/index_member stamp membership_kind",
+        "src/kinace_v3/pit_universe.py:184-261 snapshot=latest-complete; interval=in_date<=d<out_date; missing/conflicting kind raises"
+      ],
+      "counterexample": "snapshot 03-31 vs 04-30 selection; interval half-open out_date boundary 05-01",
+      "residual": "none"
+    },
+    {
+      "id": 6,
+      "confirmed_finding": "Benchmark anomaly audit",
+      "task": "T12",
+      "verdict": "pass",
+      "evidence": [
+        "src/kinace_v3/trial_backtest.py:32-43 RETURN_ANOMALY_POLICY (retain_all_finite_returns; sanitized audit_only)",
+        "src/kinace_v3/trial_backtest.py:778-882 _benchmark_metrics retains raw curve, records exclusions {date,code,raw_return,reason}, benchmark_total_return from raw",
+        "src/kinace_v3/portfolio_backtest.py:695-699 equal-weight market proxy, is_official_index=false"
+      ],
+      "counterexample": "A +100%, B 0% -> raw day return +50%, sanitized 0%, exclusion recorded",
+      "residual": "R3 (re-entering suspended codes' returns silently dropped from raw proxy)"
+    },
+    {
+      "id": 7,
+      "confirmed_finding": "Short-sample statistical unavailability",
+      "task": "T13",
+      "verdict": "pass",
+      "evidence": [
+        "src/kinace_v3/research_statistics.py:434-440,442-474,524-530 min sessions/trades gating; sharpe/bootstrap/DSR null when unmet; total_return visible",
+        "src/kinace_v3/optimization.py:399-441 objective nulls annualized/excess/sharpe/sortino and sets status=unavailable",
+        "src/kinace_v3/trial_backtest.py:688-693 single-return annualization removed"
+      ],
+      "counterexample": "one day +10% -> annualized_return null, raw cumulative return visible",
+      "residual": "R2 (raw metrics annualize 3-59 session samples; unavailable_reason mislabeled)"
+    }
+  ],
+  "residual_issues": [
+    {
+      "id": "R2",
+      "severity": "Medium",
+      "area": "T13 short samples",
+      "file_lines": "src/kinace_v3/trial_backtest.py:688-693,720-731",
+      "description": "_metrics uses len(returns)>=2 instead of the pre-registered min_observation_sessions threshold; 3-59 session samples persist a huge non-null annualized_return with unavailable_reason=None, and the reason is mislabeled when only <2 returns.",
+      "expected": "metrics-level annualized/sharpe/sortino null with accurate unavailable_reason below the pre-registered threshold.",
+      "actual": "only <2 returns nulled at metrics level; sub-threshold samples show inflated annualized_return."
+    },
+    {
+      "id": "R1",
+      "severity": "Low",
+      "area": "T09/T10 raw/adjusted",
+      "file_lines": "src/kinace_v3/price_basis.py:240-241,251-255; src/kinace_v3/data_collection/providers/tushare_market_provider.py:282",
+      "description": "adjustment_basis_date recorded as final date but never read by derive_adjusted_bars, which re-bases to the earliest factor; forward- vs backward-adjusted ambiguity.",
+      "expected": "recorded basis date and derivation basis agree.",
+      "actual": "recorded basis = final; derivation basis = earliest; field unused."
+    },
+    {
+      "id": "R3",
+      "severity": "Low",
+      "area": "T12 benchmark",
+      "file_lines": "src/kinace_v3/trial_backtest.py:801-847",
+      "description": "raw benchmark proxy drops re-entering codes (suspended then resumed) because previous is only replaced by current when current is non-empty.",
+      "expected": "retain raw curve without silently dropping observations.",
+      "actual": "re-entering codes' multi-day returns are silently omitted from the raw curve."
+    }
+  ],
+  "production_ready": false,
+  "production_changed": false,
+  "completed_at_utc": "2026-09-26T00:00:00Z"
+}

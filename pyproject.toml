@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kinace-v35-core"
+version = "3.5.0"
+description = "Kinace V3.5 full-market research, anti-overfitting validation, automated backtesting, holdout controls, and unattended delivery package"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+kinace-v33 = "kinace_v3.cli:main"
+kinace-v33-portal = "kinace_v3.launcher:main"
+kinace-v33-daily = "kinace_v3.launcher:main"
+kinace-v33-readonly = "kinace_v3.readonly_launcher:main"
+kinace-v34 = "kinace_v3.cli:main"
+kinace-v34-portal = "kinace_v3.launcher:main"
+kinace-v34-daily = "kinace_v3.launcher:main"
+kinace-v34-readonly = "kinace_v3.readonly_launcher:main"
+kinace-v35 = "kinace_v3.cli:main"
+kinace-v35-portal = "kinace_v3.launcher:main"
+kinace-v35-daily = "kinace_v3.launcher:main"
+kinace-v35-readonly = "kinace_v3.readonly_launcher:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+kinace_v3 = ["portal_assets/*", "portal_v33_assets/*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+addopts = "-q"

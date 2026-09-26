@@ -1,0 +1,21 @@
+{
+  "artifact_type": "kinace_v3_formal_evidence_verification",
+  "schema_version": 1,
+  "status": "blocked_writable",
+  "read_only": false,
+  "manifest_path": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\reports\\execution_framework\\evidence\\formal-evidence-manifest.json",
+  "manifest_file_sha256": "7baf8f11da887817ea9129b21388bf74ac759fab5921f9eb18fa59db52109d48",
+  "manifest_sha256": "46a762979d75d5ca36e6f1f6080b333c0d4dda4db102825cdd3c22eb87b7195e",
+  "error": "formal evidence manifest is writable; formal evidence must be read-only",
+  "formal_evidence_mutated": false,
+  "production_ready": false,
+  "production_changed": false,
+  "holdout_access_count": 16,
+  "code_commit": "e01131f4be3bc0ab54f14665919b60155795c6fc",
+  "config_sha256": "fe6937e79637963b3324d69cf275896a57bbce01cb63502336e8093860e3c794",
+  "database_sha256": "acfa26429c9025e6872868c27aaaaabc1b3f44e48a30a423f63cd1b00ffc7d98",
+  "snapshot_set_sha256": "d7259b093b786c64de2f0b1934b671d85031cea8f9eeb4389443301d7c0f922b",
+  "evaluation_protocol_hash": "52a5b388603f92ef78667cc1d8d9fda85f119b0cb0d95ee52d5fa0b9fc3eab95",
+  "evaluation_protocol_sha256": "cb1892c9bb9da207dcc346938bca300deb26b9f42d1c4fec03f5a668938c893b",
+  "holdout_vault_sha256": "e6e5acf4af607d8ee6d707b5e7162f3820c942e92ff694714fe361b3d145265e"
+}

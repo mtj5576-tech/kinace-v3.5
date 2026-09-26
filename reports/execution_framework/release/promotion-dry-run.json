@@ -1,0 +1,31 @@
+{
+  "artifact_type": "kinace_v3_promotion_dry_run",
+  "candidate_id": null,
+  "database": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\outputs\\coldstart\\kinace.sqlite3",
+  "dry_run": true,
+  "experiment_id": null,
+  "gates": [
+    {
+      "detail": "missing",
+      "name": "data_gate_ready",
+      "passed": false
+    },
+    {
+      "detail": null,
+      "name": "candidate_present",
+      "passed": false
+    },
+    {
+      "detail": "No production approval path is enabled in Kinace V3.",
+      "name": "explicit_approval_path",
+      "passed": false
+    }
+  ],
+  "mutation_allowed": false,
+  "note": "Dry-run only. No production model file is written and no promotion is approved by this command.",
+  "production_changed": false,
+  "production_path": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\config\\model.production.v3.json",
+  "report_status": "no_runs",
+  "run_id": null,
+  "status": "blocked_data_gate"
+}

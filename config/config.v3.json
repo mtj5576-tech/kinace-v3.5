@@ -1,0 +1,11 @@
+{
+  "schema_version": 3,
+  "application": {
+    "name": "kinace-v3.3",
+    "version": "3.3.0",
+    "offline": true
+  },
+  "database": {
+    "path": "D:\\kinacesqlv3.2\\kinace_v3_2.sqlite3"
+  }
+}

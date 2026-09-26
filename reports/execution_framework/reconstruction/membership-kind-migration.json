@@ -1,0 +1,16 @@
+{
+  "artifact_type": "kinace_v3_membership_kind_migration",
+  "current_records": 30340,
+  "database": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\outputs\\reconstruction\\kinace_v3_2.sqlite3",
+  "ingestion_run_id": "membership-kind-backfill-20260926-v1",
+  "inserted": 30340,
+  "kinds": {
+    "interval": 7740,
+    "snapshot": 22600
+  },
+  "missing_membership_kind": 0,
+  "processed": 30340,
+  "recorded_at_utc": "2026-09-26T15:57:45.825394Z",
+  "source": "migration:membership-kind-backfill-v1",
+  "status": "passed"
+}

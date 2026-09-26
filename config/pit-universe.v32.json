@@ -1,0 +1,17 @@
+{
+  "index_codes": [
+    "000016.SH",
+    "000300.SH",
+    "000852.SH",
+    "000905.SH"
+  ],
+  "require_index_membership": true,
+  "min_history_sessions": 65,
+  "min_close": 1.0,
+  "min_20d_amount": 10000000.0,
+  "require_listing_date": true,
+  "require_security_state": true,
+  "require_decision_bar": true,
+  "require_decision_tradable": true,
+  "industry_mode": "pit_membership"
+}

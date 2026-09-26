@@ -1,0 +1,11 @@
+{
+  "artifact_type": "kinace_v3_coldstart_determinism",
+  "status": "passed",
+  "seed": 20260926,
+  "first_hash": "b156b4cfae42ec758c4407c747aa3f83b8dcfbff258ee1091e00cd8f1e194207",
+  "second_hash": "b156b4cfae42ec758c4407c747aa3f83b8dcfbff258ee1091e00cd8f1e194207",
+  "same_decisions": true,
+  "injected_count": 12,
+  "rejected_count": 12,
+  "false_negative_count": 0
+}

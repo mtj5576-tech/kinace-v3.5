@@ -1,0 +1,10 @@
+{
+  "artifact_type": "kinace_v3_holdout_access_before_eligible",
+  "status": "passed",
+  "track": "sandbox",
+  "holdout_access_count": 0,
+  "pre_eligible_access_count": 0,
+  "formal_holdout_read": false,
+  "registry_path": "C:\\Users\\ZhuanZ\\Documents\\ChatGPT\\kinace\\target-kinace-v3.4\\outputs\\coldstart\\sandbox\\holdout-access-registry.json",
+  "registry_sha256": "749656339eaefa9b80dc3371e2c2c0665bf6d6ba58292420eb19dbfd9370059a"
+}

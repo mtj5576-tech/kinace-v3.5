@@ -1,0 +1,265 @@
+{
+  "holdout_policy": {
+    "version": "kinace-v3.3-holdout-min-trade-extension-v1",
+    "scope": "fresh_fixed_holdout",
+    "initial_holdout_sessions": 60,
+    "min_trade_count": 30,
+    "extension_step_sessions": 1,
+    "max_total_sessions": 120,
+    "trigger": "all_non_trade_holdout_gates_passed_and_trade_count_lt_30",
+    "freeze_candidate_before_extension": true,
+    "stop_on_trade_count_only": true,
+    "stop_when_trade_count_reached": true,
+    "reject_if_not_reached_by_max_sessions": true,
+    "retroactive": false
+  },
+  "candidates": [
+    {
+      "model_config": {
+        "version": "kinace-v3.2-opt-conservative-v1",
+        "mode": "backtest_driven_optimization",
+        "weights": {
+          "rel_sector_strength": 0.22,
+          "close_location_5": 0.17,
+          "volume_ratio": 0.19,
+          "log_amount": 0.17,
+          "turnover": 0.0,
+          "proximity_20d_high": 0.11,
+          "ret_5": 0.09,
+          "gap": 0.05
+        },
+        "penalties": {
+          "rsi_overbought": 78.0,
+          "kdj_overbought": 96.0,
+          "overheat_penalty": 1.0,
+          "amplitude_threshold": 0.035,
+          "amplitude_multiplier": 4.5,
+          "amplitude_max_penalty": 0.4
+        }
+      },
+      "backtest_config": {
+        "initial_cash": 300000.0,
+        "max_positions": 6,
+        "position_size_pct": 0.15,
+        "lot_size": 100,
+        "min_score": 0.55,
+        "max_hold_sessions": 8,
+        "commission_rate": 0.0003,
+        "min_commission": 5.0,
+        "stamp_duty_rate": 0.0005,
+        "transfer_fee_rate": 0.00001,
+        "slippage_bps": 5.0,
+        "market_filter_enabled": true,
+        "market_filter_sessions": 10,
+        "min_market_return": -0.01,
+        "stop_atr_multiple": 1.5,
+        "target_atr_multiple": 2.5,
+        "atr_period": 14
+      }
+    },
+    {
+      "model_config": {
+        "version": "kinace-v3.2-baseline-v1",
+        "mode": "backtest_driven_optimization",
+        "weights": {
+          "rel_sector_strength": 0.22,
+          "close_location_5": 0.17,
+          "volume_ratio": 0.17,
+          "log_amount": 0.17,
+          "turnover": 0.0,
+          "proximity_20d_high": 0.11,
+          "ret_5": 0.11,
+          "gap": 0.05
+        },
+        "penalties": {
+          "rsi_overbought": 80.0,
+          "kdj_overbought": 100.0,
+          "overheat_penalty": 1.0,
+          "amplitude_threshold": 0.04,
+          "amplitude_multiplier": 4.0,
+          "amplitude_max_penalty": 0.35
+        }
+      },
+      "backtest_config": {
+        "initial_cash": 300000.0,
+        "max_positions": 8,
+        "position_size_pct": 0.20,
+        "lot_size": 100,
+        "min_score": 0.50,
+        "max_hold_sessions": 10,
+        "commission_rate": 0.0003,
+        "min_commission": 5.0,
+        "stamp_duty_rate": 0.0005,
+        "transfer_fee_rate": 0.00001,
+        "slippage_bps": 5.0,
+        "market_filter_enabled": false,
+        "market_filter_sessions": 20,
+        "min_market_return": -0.03,
+        "stop_atr_multiple": 2.0,
+        "target_atr_multiple": 3.0,
+        "atr_period": 14
+      }
+    },
+    {
+      "model_config": {
+        "version": "kinace-v3.2-opt-defensive-v1",
+        "mode": "backtest_driven_optimization",
+        "weights": {
+          "rel_sector_strength": 0.24,
+          "close_location_5": 0.18,
+          "volume_ratio": 0.16,
+          "log_amount": 0.17,
+          "turnover": 0.0,
+          "proximity_20d_high": 0.10,
+          "ret_5": 0.10,
+          "gap": 0.05
+        },
+        "penalties": {
+          "rsi_overbought": 75.0,
+          "kdj_overbought": 92.0,
+          "overheat_penalty": 1.25,
+          "amplitude_threshold": 0.03,
+          "amplitude_multiplier": 5.0,
+          "amplitude_max_penalty": 0.45
+        }
+      },
+      "backtest_config": {
+        "initial_cash": 300000.0,
+        "max_positions": 6,
+        "position_size_pct": 0.15,
+        "lot_size": 100,
+        "min_score": 0.58,
+        "max_hold_sessions": 6,
+        "commission_rate": 0.0003,
+        "min_commission": 5.0,
+        "stamp_duty_rate": 0.0005,
+        "transfer_fee_rate": 0.00001,
+        "slippage_bps": 5.0,
+        "market_filter_enabled": true,
+        "market_filter_sessions": 10,
+        "min_market_return": 0.0,
+        "stop_atr_multiple": 1.2,
+        "target_atr_multiple": 2.0,
+        "atr_period": 14
+      }
+    }
+  ],
+  "backtest_search_space": {
+    "max_positions": [4, 6, 8, 10],
+    "position_size_pct": [0.12, 0.15, 0.20, 0.25, 0.30],
+    "max_hold_sessions": [6, 8, 10, 12],
+    "stop_atr_multiple": [1.0, 1.2, 1.5, 2.0, 2.5],
+    "target_atr_multiple": [1.5, 2.0, 2.5, 3.0, 3.5],
+    "min_score": [0.45, 0.50, 0.55, 0.60],
+    "market_filter_enabled": [false, true],
+    "market_filter_sessions": [5, 10, 20],
+    "min_market_return": [-0.03, -0.01, 0.0, 0.01]
+  },
+  "walk_forward": {
+    "folds": 8,
+    "validation_sessions": 20,
+    "test_sessions": 60,
+    "min_train_sessions": 120,
+    "purge_sessions": 5,
+    "embargo_sessions": 5,
+    "training_mode": "rank_ic",
+    "max_rounds": 2,
+    "candidates_per_round": 4
+  },
+  "stability": {
+    "min_oos_windows": 8,
+    "min_noninferior_rate": 0.75,
+    "min_candidate_gate_pass_rate": 0.75,
+    "max_drawdown_regression": 0.10,
+    "paired_return_epsilon": 0.0,
+    "paired_profit_factor_epsilon": 0.0,
+    "paired_max_drawdown_upper_bound": 0.10,
+    "bootstrap_iterations": 5000,
+    "confidence_level": 0.95,
+    "bootstrap_seed": 0,
+    "assume_recorded_trials_complete": true,
+    "max_feature_weight": 0.75,
+    "max_feature_weight_binding": true,
+    "cost_slippage_bps": [5.0, 10.0, 20.0],
+    "cost_min_positive_rate": 0.667,
+    "market_filter_min_positive_rate": 0.75,
+    "market_filter_max_return_range": 0.50,
+    "trade_count_policy_version": "kinace-v3.3-d2-candidate-level-trade-count-v1",
+    "trade_count_scope": "walk_forward_candidate_aggregate",
+    "candidate_min_trade_count": 30,
+    "fold_min_trade_count": 1,
+    "min_active_fold_rate": 1.0
+  },
+  "evaluation_policy": {
+    "target_sharpe": 1.0
+  },
+  "objective": {
+    "schema_version": 2,
+    "metric": "kinace_v3_primary_net_sharpe",
+    "policy": {
+      "version": "kinace-v3.3-phase3-objective-policy-v1",
+      "source": "phase3_risk_policy",
+      "selected_on": "development_walk_forward_only",
+      "holdout_used_for_selection": false,
+      "frozen_before_holdout": true,
+      "objective_weight_source": "risk_policy_fixed"
+    },
+    "primary": {
+      "metric": "net_sharpe",
+      "source_metric": "sharpe",
+      "direction": "maximize",
+      "sign": 1.0,
+      "normalization": "identity",
+      "clip_min": -5.0,
+      "clip_max": 5.0,
+      "weight": 1.0,
+      "source": "phase3_risk_policy"
+    },
+    "constraints": {
+      "min_trade_count": {
+        "operator": ">=",
+        "threshold": 30,
+        "binding": true,
+        "source": "phase3_risk_policy"
+      },
+      "max_drawdown": {
+        "operator": "<=",
+        "threshold": 0.6,
+        "binding": true,
+        "source": "phase3_risk_policy"
+      },
+      "max_turnover_per_session": {
+        "operator": "<=",
+        "threshold": 0.5,
+        "binding": true,
+        "source": "phase3_risk_policy"
+      },
+      "min_profit_factor": {
+        "operator": ">=",
+        "threshold": 1.0,
+        "binding": true,
+        "source": "phase3_risk_policy"
+      },
+      "min_total_return": {
+        "operator": ">=",
+        "threshold": 0.0,
+        "binding": true,
+        "source": "phase3_risk_policy"
+      },
+      "min_win_rate": {
+        "operator": ">=",
+        "threshold": 0.0,
+        "binding": true,
+        "source": "phase3_risk_policy"
+      }
+    },
+    "report_only": {
+      "max_feature_weight": {
+        "operator": "<=",
+        "threshold": 0.75,
+        "binding": false,
+        "source": "phase4_transition"
+      }
+    }
+  }
+}
