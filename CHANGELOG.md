@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.5.1
+
+- Added a compatibility mode for legacy adjusted-price databases during Tushare market sync.
+- Prevented partial adjustment-factor series from entering historical feature snapshots before a full raw-price migration.
+- Fixed the raw-provider rebase path so an explicit price-basis migration can execute when requested.
+
 ## 3.5.0
 
 - Fixed historical industry PIT fail-open behavior and forced PIT-ready historical snapshots.

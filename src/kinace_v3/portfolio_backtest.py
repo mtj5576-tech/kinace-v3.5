@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
@@ -370,6 +371,8 @@ def _record_payload(row: Mapping[str, Any]) -> Mapping[str, Any]:
 def _adjustment_factor_rows(store: RevisionStore | str | Path) -> list[dict[str, Any]]:
     from .history_features import _iter_current_dataset_rows, _record
 
+    if os.environ.get("KINACE_TUSHARE_PRICE_BASIS", "raw").strip().lower() != "raw":
+        return []
     resolved_store = store if isinstance(store, RevisionStore) else RevisionStore(store)
     try:
         return [

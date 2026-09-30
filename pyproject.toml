@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "kinace-v35-core"
-version = "3.5.0"
+version = "3.5.1"
 description = "Kinace V3.5 full-market research, anti-overfitting validation, automated backtesting, holdout controls, and unattended delivery package"
 readme = "README.md"
 requires-python = ">=3.10"

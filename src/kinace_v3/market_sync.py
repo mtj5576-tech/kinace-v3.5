@@ -662,18 +662,18 @@ def sync_market(
         scales: dict[str, float] = {}
         volume_scales: dict[str, float] = {}
         rebased = {}
-        if not raw_price_basis:
-            scales = _price_scales(resolved_store, bundle)
-            volume_scales = _volume_scales(resolved_store, bundle)
-            if rebase_price_basis and scales:
-                rebased = _rebase_current_prices(
-                    resolved_store,
-                    scales,
-                    status=status,
-                    observed_at_utc=checked_at,
-                )
-                scales = {}
-                volume_scales = {}
+        scales = _price_scales(resolved_store, bundle)
+        volume_scales = _volume_scales(resolved_store, bundle)
+        if rebase_price_basis and scales:
+            rebased = _rebase_current_prices(
+                resolved_store,
+                scales,
+                status=status,
+                observed_at_utc=checked_at,
+            )
+            scales = {}
+            volume_scales = {}
+        elif not raw_price_basis:
             bundle = _normalize_bundle(bundle, scales, volume_scales)
         parity = _parity_report(
             resolved_store,

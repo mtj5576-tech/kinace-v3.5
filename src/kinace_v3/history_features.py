@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import json
 import math
+import os
 import sqlite3
 import statistics
 from collections import defaultdict, deque
@@ -69,6 +70,10 @@ DEFAULT_MODEL_CONFIG = {
 
 class HistoryFeatureError(ValueError):
     """Raised when historical feature snapshots cannot be built safely."""
+
+
+def _use_explicit_adjustment_factors() -> bool:
+    return os.environ.get("KINACE_TUSHARE_PRICE_BASIS", "raw").strip().lower() == "raw"
 
 
 def _utc_now() -> str:
@@ -489,9 +494,10 @@ def build_history_snapshots(
         if str(row.get("effective_status") or row.get("status"))
         in {RevisionStatus.OBSERVED.value, RevisionStatus.BACKFILLED_RELIABLE.value}
     ]
-    adjustment_rows = _current_dataset_rows(
-        resolved_database,
-        "adjustment_factors",
+    adjustment_rows = (
+        _current_dataset_rows(resolved_database, "adjustment_factors")
+        if _use_explicit_adjustment_factors()
+        else []
     )
     metadata_rows = _current_dataset_rows(resolved_database, "stock_metadata")
     turnover_rows = _current_dataset_rows(

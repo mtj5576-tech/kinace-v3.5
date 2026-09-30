@@ -8,6 +8,8 @@ historical prices.
 
 from __future__ import annotations
 
+import os
+from dataclasses import replace
 from datetime import date, timedelta
 from typing import Any, Sequence
 
@@ -69,7 +71,7 @@ class TushareMarketProvider:
     """Build V3 market datasets from Tushare raw daily bars and adj factors."""
 
     source_name = "tushare_daily_adj"
-    price_basis = "raw"
+    price_basis = os.environ.get("KINACE_TUSHARE_PRICE_BASIS", "raw").strip().lower()
     batch_min_codes = 8
     batch_max_days = 31
 
@@ -412,7 +414,7 @@ class TushareMarketProvider:
             TradeCalendarRecord(exchange="SSE", cal_date=value, is_open=True)
             for value in sorted(calendar_dates)
         ]
-        return MarketBundle(
+        bundle = MarketBundle(
             daily_bars=tuple(sort_records(daily_bars)),
             trade_calendar=tuple(sort_records(calendar)),
             security_state=tuple(sort_records(states)),
@@ -428,6 +430,104 @@ class TushareMarketProvider:
                 )
             ),
         )
+        if self.price_basis != "raw":
+            bundle = _legacy_adjusted_bundle(bundle)
+        return bundle
+
+
+def _legacy_adjusted_bundle(bundle: MarketBundle) -> MarketBundle:
+    """Rebuild legacy research-price series from raw bars and adj factors."""
+
+    factors_by_code: dict[str, dict[str, float]] = {}
+    for factor in bundle.adjustment_factors:
+        factors_by_code.setdefault(factor.ts_code, {})[factor.trade_date] = float(
+            factor.adj_factor
+        )
+    ratios: dict[tuple[str, str], float] = {}
+    for code, factors in factors_by_code.items():
+        latest_date = max(factors)
+        latest_factor = factors[latest_date]
+        if latest_factor <= 0:
+            raise ProviderDataError(f"Tushare adj_factor must be positive for {code}")
+        for trade_date, factor_value in factors.items():
+            ratios[(code, trade_date)] = factor_value / latest_factor
+
+    bars_by_code: dict[str, list[DailyBarRecord]] = {}
+    for record in bundle.daily_bars:
+        bars_by_code.setdefault(record.ts_code, []).append(record)
+    adjusted_bars: list[DailyBarRecord] = []
+    for code, records in bars_by_code.items():
+        previous_close: float | None = None
+        for record in sorted(records, key=lambda item: item.trade_date):
+            ratio = ratios.get((code, record.trade_date))
+            if ratio is None:
+                raise ProviderDataError(
+                    f"Tushare adj_factor is missing for {code} on {record.trade_date}"
+                )
+            close = record.close * ratio
+            change = close - previous_close if previous_close is not None else None
+            pct_chg = close / previous_close - 1.0 if previous_close else None
+            adjusted_bars.append(
+                replace(
+                    record,
+                    open=record.open * ratio,
+                    high=record.high * ratio,
+                    low=record.low * ratio,
+                    close=close,
+                    pre_close=previous_close,
+                    change=change,
+                    pct_chg=pct_chg,
+                )
+            )
+            previous_close = close
+
+    adjusted_basics = [
+        replace(
+            record,
+            close=record.close * ratios[(record.ts_code, record.trade_date)],
+        )
+        for record in bundle.daily_basic_metrics
+    ]
+    adjusted_states = []
+    for record in bundle.security_state:
+        ratio = ratios[(record.ts_code, record.trade_date)]
+        adjusted_states.append(
+            replace(
+                record,
+                prev_close=(
+                    record.prev_close * ratio
+                    if record.prev_close is not None
+                    else None
+                ),
+                up_limit=(
+                    record.up_limit * ratio if record.up_limit is not None else None
+                ),
+                down_limit=(
+                    record.down_limit * ratio
+                    if record.down_limit is not None
+                    else None
+                ),
+            )
+        )
+    adjusted_labels = [
+        replace(
+            record,
+            next_open=record.next_open
+            * ratios[(record.ts_code, record.next_trade_date)],
+            next_close=record.next_close
+            * ratios[(record.ts_code, record.next_trade_date)],
+        )
+        for record in bundle.forward_labels
+    ]
+    return MarketBundle(
+        daily_bars=tuple(adjusted_bars),
+        trade_calendar=bundle.trade_calendar,
+        security_state=tuple(adjusted_states),
+        forward_labels=tuple(adjusted_labels),
+        daily_basic_metrics=tuple(adjusted_basics),
+        adjustment_factors=tuple(),
+        stock_metadata=bundle.stock_metadata,
+    )
 
 
 __all__ = ["TushareMarketProvider"]
